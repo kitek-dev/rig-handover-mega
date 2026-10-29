@@ -1,9 +1,8 @@
 ---
 plan: morning-digest
-status: done
+status: ready
 owner: rook
 opened: 2026-10-29
-closed: 2026-10-29
 ---
 
 # Morning digest
@@ -78,14 +77,3 @@ page again with `LANE_MARKER` unset (the banner reads "no marker set") and uploa
 link. Move this plan to `docs/plans/done/` with its issue list.
 
 Done when: the preview link no longer shows the lane marker.
-
-## Issues
-
-1. https://github.com/kitek-dev/rig-handover-mega/issues/1 · Digest types
-2. https://github.com/kitek-dev/rig-handover-mega/issues/2 · Run log reader
-3. https://github.com/kitek-dev/rig-handover-mega/issues/3 · Digest page
-4. https://github.com/kitek-dev/rig-handover-mega/issues/4 · Digest JSON
-5. https://github.com/kitek-dev/rig-handover-mega/issues/5 · Board links to digests
-6. https://github.com/kitek-dev/rig-handover-mega/issues/6 · Route tests
-7. https://github.com/kitek-dev/rig-handover-mega/issues/7 · Preview for review (https://kitek-dev.github.io/rig-preview/)
-8. https://github.com/kitek-dev/rig-handover-mega/issues/8 · Clean up
