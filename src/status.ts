@@ -1,13 +1,30 @@
 import { readdirSync } from 'node:fs';
 import type { RigConfig } from './config.js';
+import { readNight } from './digest/read.js';
 import { lastBeat, type Beat } from './heartbeat.js';
 
 export type Status = {
   adapter: string;
   installed: string;
   lastBeat: Beat | null;
-  nights: string[];
+  nights: NightEntry[];
 };
+
+export type NightCounts = { ok: number; retry: number; fail: number };
+export type NightEntry = { night: string; counts: NightCounts | null };
+
+// Jobs (rows) per lastStatus. null when the night's file can't be read.
+async function nightCounts(runsDir: string, night: string): Promise<NightCounts | null> {
+  try {
+    const digest = await readNight(runsDir, night);
+    if (!digest) return null;
+    const counts: NightCounts = { ok: 0, retry: 0, fail: 0 };
+    for (const row of digest.rows) counts[row.lastStatus]++;
+    return counts;
+  } catch {
+    return null;
+  }
+}
 
 // Nights on disk = runs/<YYYY-MM-DD>.jsonl, newest first.
 export function nightsOnDisk(runsDir: string): string[] {
@@ -22,11 +39,14 @@ export function nightsOnDisk(runsDir: string): string[] {
   }
 }
 
-export function readStatus(config: RigConfig): Status {
+export async function readStatus(config: RigConfig): Promise<Status> {
+  const nights = await Promise.all(
+    nightsOnDisk(config.runsDir).map(async (night) => ({ night, counts: await nightCounts(config.runsDir, night) })),
+  );
   return {
     adapter: config.adapter,
     installed: config.installed,
     lastBeat: lastBeat(),
-    nights: nightsOnDisk(config.runsDir),
+    nights,
   };
 }

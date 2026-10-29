@@ -20,13 +20,14 @@ export function createApp(config: RigConfig = loadConfig()) {
     return c.json({ night, badLines: digest.badLines, rows: sortRows(digest.rows) });
   });
 
-  app.get('/', (c) =>
-    c.html(
+  app.get('/', async (c) => {
+    const status = await readStatus(config);
+    return c.html(
       <Layout title="status" lane={lane()}>
-        <StatusBoard status={readStatus(config)} />
+        <StatusBoard status={status} />
       </Layout>,
-    ),
-  );
+    );
+  });
 
   app.get('/digest/:night', async (c) => {
     const night = c.req.param('night');
