@@ -19,8 +19,4 @@ export type NightDigest = {
 };
 
 /** Reads `<runsDir>/<night>.jsonl`. Resolves to null when the file does not exist. */
-export async function readNight(runsDir: string, night: string): Promise<NightDigest | null> {
-  void runsDir;
-  void night;
-  throw new Error("not implemented");
-}
+export { readNight } from "./read.js";
